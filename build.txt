@@ -1,0 +1,4 @@
+displayName = Dungeon Delvers
+author = Crimson Lotus Studios
+modReferences = StructureHelper
+version = 0.1

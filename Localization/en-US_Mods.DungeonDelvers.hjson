@@ -1,0 +1,31 @@
+"Keybinds.Parkour Node.DisplayName": Parkour  Node
+Projectiles.ParkourNodeProjectile.DisplayName: Parkour Node Projectile
+
+Items: {
+	JigsawDown: {
+		DisplayName: Jigsaw Down
+		Tooltip: ""
+	}
+
+	JigsawRight: {
+		DisplayName: Jigsaw Right
+		Tooltip: ""
+	}
+
+	JigsawUp: {
+		DisplayName: Jigsaw Up
+		Tooltip: ""
+	}
+
+	JigsawLeft: {
+		DisplayName: Jigsaw Left
+		Tooltip: ""
+	}
+
+	InvisibleTile_Item: {
+		DisplayName: Invisible Tile_ Item
+		Tooltip: ""
+	}
+}
+
+Tiles.JigsawTile.MapEntry: Jigsaw Tile
