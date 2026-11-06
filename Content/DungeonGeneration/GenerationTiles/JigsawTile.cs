@@ -4,6 +4,7 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.Localization;
 using Terraria.ObjectData;
+using static DungeonDelvers.Content.DungeonGeneration.GenerationTiles.JigsawTileItem;
 
 namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
 {
@@ -22,11 +23,11 @@ namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
             {
             }
         }
-        private enum JigsawTileDirections
+        internal enum JigsawTileDirections
         {
-            JigsawDown = 0,
+            JigsawUp = 0,
             JigsawRight = 1,
-            JigsawUp = 2,
+            JigsawDown = 2,
             JigsawLeft = 3
         }
 
@@ -34,6 +35,7 @@ namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
         private readonly int placeStyle;
 
         public override string Name => GetInternalNameFromStyle(placeStyle);
+        public override string Texture => AssetDirectory.DungeonGeneration + "Items/" + Name;
 
         public static string GetInternalNameFromStyle(int style)
         {
@@ -61,6 +63,7 @@ namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
 
     internal class JigsawTile : ModTile
     {
+        public override string Texture => AssetDirectory.DungeonGeneration + "Tiles/" + Name;
 
         public override void SetStaticDefaults()
         {
@@ -71,7 +74,7 @@ namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
 
             Main.tileNoFail[Type] = false;
 
-
+            
 
 
             TileObjectData.newTile.CoordinateHeights = new int[4] { 16,16,16,16 };
@@ -91,5 +94,6 @@ namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
             noItem = true;
             
         }
+        
     }
 }

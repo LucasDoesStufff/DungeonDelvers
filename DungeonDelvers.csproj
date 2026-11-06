@@ -13,11 +13,13 @@
 	  <Folder Include="Assets\Backgrounds\" />
 	  <Folder Include="Assets\Buffs\" />
 	  <Folder Include="Assets\DungeonDebug\" />
+	  <Folder Include="Assets\Debug\" />
 	  <Folder Include="Assets\Projectiles\" />
 	  <Folder Include="Assets\NPCs\" />
-	  <Folder Include="Assets\Walls\" />
 	  <Folder Include="Assets\Tiles\" />
+	  <Folder Include="Assets\Walls\" />
 	  <Folder Include="Content\Projectiles\Parkour\" />
+	  <Folder Include="Effects\Compiled\Misc\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="StructureHelper">

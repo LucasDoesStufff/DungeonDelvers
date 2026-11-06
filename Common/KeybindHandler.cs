@@ -8,16 +8,19 @@ namespace DungeonDelvers.Common
 {
     class KeybindHandler : ModSystem
     {
-        public static ModKeybind NodeKey { get; private set; }
+        public static ModKeybind ShaderOpen { get; private set; }
+        public static ModKeybind ShaderClose { get; private set; }
 
         public override void Load()
         {
-            NodeKey = KeybindLoader.RegisterKeybind(Mod, "Parkour Node", "G");
+            ShaderOpen = KeybindLoader.RegisterKeybind(Mod, "Open Shader debug", "G");
+            ShaderClose = KeybindLoader.RegisterKeybind(Mod, "Close Shader debug", "H");
         }
 
         public override void Unload()
         {
-            NodeKey = null;
+            ShaderOpen = null;
+            ShaderClose = null;
         }
     }
 }

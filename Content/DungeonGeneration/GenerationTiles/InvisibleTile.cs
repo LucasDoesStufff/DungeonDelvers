@@ -5,10 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ObjectData;
 
-namespace DungeonDelvers.Content.DungeonGeneration
+namespace DungeonDelvers.Content.DungeonGeneration.GenerationTiles
 {
+    internal class InvisibleTile_Item : ModItem
+    {
+        public override string Texture => AssetDirectory.DungeonGeneration + "Items/" + Name;
+        public override void SetDefaults()
+        {
+            Item.width = 16;
+            Item.height = 16;
+            Item.maxStack = 999;
+            Item.value = 0;
+            Item.useAnimation = 15;
+            Item.useTime = 10;
+
+            
+            Item.DefaultToPlaceableTile(ModContent.TileType<InvisibleTile_Tile>(), 0);
+            Item.consumable = false;
+        }
+    }
+
     internal class InvisibleTile_Tile : ModTile
     {
+        public override string Texture => AssetDirectory.DungeonGeneration + "Tiles/" + Name;
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;

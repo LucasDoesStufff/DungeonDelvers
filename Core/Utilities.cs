@@ -1,4 +1,4 @@
-﻿using DungeonDelvers.Content.DungeonGeneration;
+﻿using DungeonDelvers.Content.DungeonGeneration.GenerationTiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,13 @@ namespace DungeonDelvers.Core
 {
     internal static class Utilities
     {
+        /// <summary>
+        /// Uses mathF function to floor down vec2s
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns>The floored down vec2s</returns>
+        public static Vector2 FloorVec2F(Vector2 v) => new Vector2(MathF.Floor(v.X), MathF.Floor(v.Y));
+
         public static void MultipleShot(Player player, IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int numberProjectiles, float rotationAmount, bool randomSpread)
         {
             position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
@@ -76,19 +83,20 @@ namespace DungeonDelvers.Core
         public static bool IsSolid(Tile tile) => tile.HasTile && !tile.IsActuated && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType];
 
         /// <summary>
-        /// Runs a flood fill algorithm at the given position and between given boundaries
+        /// Runs a flood fill algorithm at the given position and between given boundaries, stops at solid tiles.
         /// </summary>
-        /// <param name="startPoint"></param>
+        /// <param name="startPoint">The 'seed' of flood fill</param>
         /// <param name="startX"></param>
         /// <param name="endX"></param>
         /// <param name="startY"></param>
         /// <param name="endY"></param>
+        /// <param name="safetyLimit">The maximum number of tiles to fill to prevent infinite loops</param>
         /// <returns>a hashset containing all the tile coordinates inside it. Does not fill the holes</returns>
-        public static HashSet<Point> TileFloodFill(Point startPoint, int startX, int endX, int startY, int endY)
+        public static HashSet<Point> TileFloodFillSolid(Point startPoint, int startX, int endX, int startY, int endY, int safetyLimit)
         {
             HashSet<Point> newRoom = new HashSet<Point>();
             Queue<Point> q = new Queue<Point>();
-            int safetyLimit = 5000;
+            int SafetyLimit = safetyLimit;
             int count = 0;
 
             q.Enqueue(startPoint);
@@ -126,6 +134,55 @@ namespace DungeonDelvers.Core
                                    && !Main.tileSolidTop[t.TileType] && t.TileType != ModContent.TileType<InvisibleTile_Tile>();
                     newRoom.Add(n);
                     if (!isSolid)
+                    {
+                        q.Enqueue(n);
+                    }
+                }
+            }
+
+            return newRoom;
+        }
+        public static HashSet<Point> TileFloodFillCustom(Point startPoint, int startX, int endX, int startY, int endY, int safetyLimit, int BorderTileID)
+        {
+            HashSet<Point> newRoom = new HashSet<Point>();
+            Queue<Point> q = new Queue<Point>();
+            int SafetyLimit = safetyLimit;
+            int count = 0;
+
+            q.Enqueue(startPoint);
+            newRoom.Add(startPoint);
+
+            while (q.Count > 0)
+            {
+                count++;
+                if (count > safetyLimit) break;
+
+                Point p = q.Dequeue();
+
+                Point[] neighbors = new Point[]
+                {
+                    new Point(p.X + 1, p.Y),
+                    new Point(p.X - 1, p.Y),
+                    new Point(p.X, p.Y + 1),
+                    new Point(p.X, p.Y - 1),
+
+                    new Point(p.X + 1, p.Y +1),
+                    new Point(p.X + 1, p.Y -1),
+                    new Point(p.X - 1, p.Y + 1),
+                    new Point(p.X - 1, p.Y - 1)
+                };
+
+                foreach (Point n in neighbors)
+                {
+                    if (newRoom.Contains(n)) continue;
+
+                    if (n.X < startX || n.X >= endX || n.Y < startY || n.Y >= endY) continue;
+
+                    Tile t = Main.tile[n.X, n.Y];
+
+                    newRoom.Add(n);
+                    //works with any other id other than the border tile id for some reason
+                    if (!(t.HasTile && t.TileType == BorderTileID))
                     {
                         q.Enqueue(n);
                     }

@@ -1,5 +1,13 @@
-"Keybinds.Parkour Node.DisplayName": Parkour  Node
-Projectiles.ParkourNodeProjectile.DisplayName: Parkour Node Projectile
+Keybinds: {
+	"Parkour Node.DisplayName": Parkour  Node
+	"Open Shader debug.DisplayName": Open  Shader debug
+	"Close Shader debug.DisplayName": Close  Shader debug
+}
+
+Projectiles: {
+	ParkourNodeProjectile.DisplayName: Parkour Node Projectile
+	ShaderTestProjectile.DisplayName: Shader Test Projectile
+}
 
 Items: {
 	JigsawDown: {
@@ -24,6 +32,16 @@ Items: {
 
 	InvisibleTile_Item: {
 		DisplayName: Invisible Tile_ Item
+		Tooltip: ""
+	}
+
+	RoomBorderTile_Item: {
+		DisplayName: Room Border Tile_ Item
+		Tooltip: ""
+	}
+
+	ScaffoldTile_Item: {
+		DisplayName: Scaffold Tile_ Item
 		Tooltip: ""
 	}
 }

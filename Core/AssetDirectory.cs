@@ -17,7 +17,11 @@ namespace DungeonDelvers.Core
         public static string NPCs = $"{Assets}NPCs/";
         public static string Projectiles = $"{Assets}Projectiles/";
         public static string Buffs = $"{Assets}Buffs/";
-        
+        public static string Debug = $"{Assets}Debug/";
+
+        public static string DungeonGeneration = $"{Assets}DungeonGeneration/";
+
+
         public static string UI = $"{Assets}UI/";
     }
 }

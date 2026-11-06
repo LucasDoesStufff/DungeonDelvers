@@ -1,17 +1,25 @@
-﻿using DungeonDelvers.Content.DungeonGeneration;
+﻿
+// DEPRECADED FOR NOW
+
+
+
+/*using DungeonDelvers.Content.DungeonGeneration;
 
 
 namespace DungeonDelvers.Content.Test
 {
-    internal class Spritebatchtest : ModPlayer
+    internal class RoomDarkener : ModPlayer
     {
-        //TEST SUCCESSFUL IT ADDS A NON DYNAMIC ADDITIVE SHADOW OUTSIDE OF THE CLOSED SPACES NEEDS ADJUSTING
+
         List<HashSet<Point>> Rooms = new List<HashSet<Point>>();
         HashSet<Point> room = new HashSet<Point>();
+
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
+            int roombordertileID = ModContent.TileType<RoomBorderTile_Tile>();
             if (Main.gameMenu || Main.LocalPlayer == null)
                 return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D textureFade = ModContent.Request<Texture2D>("DungeonDelvers/Content/DungeonGeneration/GenerationTiles/fade").Value;
 
@@ -38,7 +46,7 @@ namespace DungeonDelvers.Content.Test
 
                     if(tile.TileType == ModContent.TileType<InvisibleTile_Tile>() && !room.Contains(new Point(x,y)))
                     {
-                        room.UnionWith(Utilities.TileFloodFill(new Point(x, y), startX, endX, startY, endY));
+                        room.UnionWith(Utilities.TileFloodFillCustom(new Point(x, y), startX, endX, startY, endY, 5000, ModContent.TileType<RoomBorderTile_Tile>()));
                         Rooms.Add(room);
                     }
                     screen.Add(new Point(x, y));
@@ -49,10 +57,11 @@ namespace DungeonDelvers.Content.Test
             {
                 screen.ExceptWith(room);
 
+                //paints outside of the room black
                 foreach (var s in screen)
                 {
-                    spriteBatch.Draw(textureFade, new Vector2(s.X * 16, s.Y * 16) - Main.screenPosition, 
-                        new Rectangle(0, 4 * 16, 16, 16), Color.Black);
+                    //spriteBatch.Draw(textureFade, new Vector2(s.X * 16, s.Y * 16) - Main.screenPosition, 
+                    //  new Rectangle(0, 4 * 16, 16, 16), Color.Black);
                 }
 
                 foreach (var i in room)
@@ -134,21 +143,22 @@ namespace DungeonDelvers.Content.Test
 
                             for (int d = 0; d < diagonalNeighbor.Length; d++)
                             {
-                                if (room.Contains(diagonalNeighbor[d]) && !Utilities.IsSolid(Main.tile[diagonalNeighbor[d].X, diagonalNeighbor[d].Y]))
+                                Tile t = Main.tile[diagonalNeighbor[d].X, diagonalNeighbor[d].Y];
+                                if (room.Contains(diagonalNeighbor[d]) && !Utilities.IsSolid(t))
                                 {
                                     diagonalIndex += diagonalNeighborVal[d];
                                     int cf = cornerFrames[d];
                                     int csx = (cf % 4) * 16;
                                     int csy = (cf / 4) * 16;
-                                    spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, 
-                                        new Rectangle(csx, csy, 16, 16), Color.White);
+                                    //spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, 
+                                    //    new Rectangle(csx, csy, 16, 16), Color.White);
                                 }
                             }
-
+                            //floating tiles
                             if (diagonalIndex == 0)
                             {
-                                spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, 
-                                    new Rectangle(0, 4 * 16, 16 ,16), Color.Black);
+                                //spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, 
+                                //    new Rectangle(0, 4 * 16, 16 ,16), Color.Black);
                             }
                             continue; // skip the normal draw below
                         }
@@ -158,20 +168,41 @@ namespace DungeonDelvers.Content.Test
                         int sourceX = (frame % 4) * 16;
                         int sourceY = (frame / 4) * 16;
                         Rectangle sourceRect = new(sourceX, sourceY, 16, 16);
-                        spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, sourceRect, Color.White);
+
+                        //this line draws the fade effect inside the room
+                        //spriteBatch.Draw(textureFade, new Vector2(i.X * 16, i.Y * 16) - Main.screenPosition, sourceRect, Color.White);
+                        HashSet<Point> edges = GetRoomEdges(room, roombordertileID);
+                        foreach (var item in edges)
+                        {
+                            spriteBatch.Draw(textureFade, new Vector2(item.X * 16, item.Y * 16) - Main.screenPosition, sourceRect, Color.Red);
+                        }
                     }
                 }
             }
-            // DEBUG
-            if(room.Contains(new Point( (int)(Main.MouseWorld.X / 16), (int)(Main.MouseWorld.Y / 16) )))
+        }
+        HashSet<Point> GetRoomEdges(HashSet<Point> room, int borderID)
+        {
+            HashSet<Point> edges = new HashSet<Point>();
+            foreach (Point p in room)
             {
-                Main.NewText("in room");
+                Point[] neighbors = new Point[]
+                {
+                    new Point(p.X + 1, p.Y),
+                    new Point(p.X - 1, p.Y),
+                    new Point(p.X, p.Y + 1),
+                    new Point(p.X, p.Y - 1)
+                };
+                foreach (Point n in neighbors)
+                {
+                    Tile t = Main.tile[n.X, n.Y];
+                    if(t.TileType == borderID)
+                    {
+                        edges.Add(p);
+                        break;
+                    }
+                }
             }
-            else
-            {
-                Main.NewText("not in room");
-            }
-            // DEBUG
+            return edges;
         }
     }
-}
+}*/
